@@ -1,0 +1,25 @@
+O(n) : duplicates are present
+======================================================
+#include <bits/stdc++.h>
+
+vector<vector<int>> pairSum(vector<int> &arr, int s){
+   vector<vector<int>> ans;
+   unordered_map<int,int> mp;
+
+   for(auto i : arr){
+      if(mp.find(s - i) != mp.end()){
+         int times = mp[s-i];
+
+         vector<int> temp;
+         temp.push_back(min(i,s-i));
+         temp.push_back(max(i,s-i));
+         
+         while(times--)
+            ans.push_back(temp);
+      }
+      mp[i]++;
+   }
+
+   sort(ans.begin(), ans.end());
+   return ans;
+}
