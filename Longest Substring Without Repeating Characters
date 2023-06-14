@@ -1,0 +1,16 @@
+int uniqueSubstrings(string input)
+{
+    vector<int> freq(26, 0);
+    
+    int l = 0, ans = 0;
+    for(int i=0; i<(int)input.size(); i++){
+        freq[input[i] - 'a'] += 1;
+        while(freq[input[i] - 'a'] > 1)
+        {
+            freq[input[l] - 'a'] -= 1;
+            l++;
+        }
+        ans = max(ans, i - l + 1);
+    }
+    return ans;
+}
