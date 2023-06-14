@@ -1,0 +1,94 @@
+#include <bits/stdc++.h>  // Includes all commonly used standard libraries
+
+struct Node {
+    Node *links[26];  // Array of links to child nodes (one for each lowercase letter)
+    int endWith = 0;  // Counter to track the number of words that end with the current node
+    int cntPref = 0;  // Counter to track the number of words that have the current node as a prefix
+
+    bool containsKey(char ch) {
+        return (links[ch - 'a'] != NULL);  // Check if there is a link for the character ch
+    }
+
+    void put(char ch, Node *node) {
+        links[ch - 'a'] = node;  // Add a link from the current node to the given node for character ch
+    }
+
+    Node *get(char ch) {
+        return links[ch - 'a'];  // Get the link (i.e., node) associated with the character ch
+    }
+
+    void setPrefix() {
+        cntPref += 1;  // Increment the count of words with the current node as a prefix
+    }
+
+    void setEndWith() {
+        endWith += 1;  // Increment the count of words that end with the current node
+    }
+
+    int getEndWith() {
+        return endWith;  // Get the count of words that end with the current node
+    }
+
+    int getPrefix() {
+        return cntPref;  // Get the count of words with the current node as a prefix
+    }
+
+    void DecPrefix() {
+        cntPref -= 1;  // Decrement the count of words with the current node as a prefix
+    }
+
+    void DecEndWith() {
+        endWith -= 1;  // Decrement the count of words that end with the current node
+    }
+};
+
+class Trie {
+private:
+    Node *root;  // Pointer to the root node of the trie
+public:
+    Trie() {
+        root = new Node();  // Create a new node and set it as the root
+    }
+
+    void insert(string word) {
+        Node *node = root;
+        for (auto ch : word) {
+            if (!node->containsKey(ch))
+                node->put(ch, new Node());  // If the character ch is not present as a link, create a new node and add the link
+            node = node->get(ch);  // Move to the next node for character ch
+            node->setPrefix();  // Increment the count of words with the current node as a prefix
+        }
+        node->setEndWith();  // Increment the count of words that end with the last node
+    }
+
+    int countWordsEqualTo(string &word) {
+        Node *node = root;
+        for (auto ch : word) {
+            if (!node->containsKey(ch))
+                return 0;  // If the character ch is not present as a link, the word is not in the trie
+            node = node->get(ch);  // Move to the next node for character ch
+        }
+        return node->getEndWith();  // Return the count of words that end with the last node
+    }
+
+    int countWordsStartingWith(string &word) {
+        Node *node = root;
+        for (auto ch : word) {
+            if (!node->containsKey(ch))
+                return 0;  // If the character ch is not present as a link, no word in the trie starts with the given prefix
+            node = node->get(ch);  // Move to the next node for character ch
+        }
+        return node->getPrefix();  // Return the count of words with the last node as a prefix
+    }
+
+    void erase(string &word) {
+        Node *node = root;
+        for (auto ch : word) {
+            if (!node->containsKey(ch))
+                return;  // If the character ch is not present as a link, the word is not in the trie
+            node = node->get(ch);  // Move to the next node for character ch
+            node->DecPrefix();  // Decrement the count of words with the current node as a prefix
+        }
+        node->DecEndWith();  // Decrement the count of words that end with the last node
+    }
+};
