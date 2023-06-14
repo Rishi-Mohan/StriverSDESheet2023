@@ -1,0 +1,31 @@
+#include <bits/stdc++.h> 
+void solve(int x, int n, string &s){
+	if(x == n){
+		return;    
+	}
+
+	string k;
+	int cnt = 1;
+	for(int i=1; i<s.size(); i++){
+		if(s[i] == s[i-1]){
+			cnt += 1;
+		}else{
+			k += to_string(cnt);
+			k += s[i-1];
+			cnt = 1;
+		}
+	}
+	k += to_string(cnt);
+	k += s.back();
+	s = k;
+
+	solve(x + 1, n, s);
+}
+
+string writeAsYouSpeak(int n) 
+{
+	string s;
+    s+='1';
+    solve(1, n, s);
+    return s;	
+}
