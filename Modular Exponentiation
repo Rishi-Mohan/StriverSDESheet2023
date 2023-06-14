@@ -1,0 +1,14 @@
+
+int modularExponentiation(int x, int n, int m) {
+	x %= m;
+
+	if(n == 0)
+		return 1;
+
+	long long res = modularExponentiation(x, n/2, m);
+
+	if(n % 2 == 0)
+		return (res % m * res % m) % m;
+	else
+		return (x % m * res % m * res % m) % m;
+}
