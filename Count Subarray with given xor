@@ -1,0 +1,14 @@
+int subarraysXor(vector<int> &arr, int x)
+{
+    unordered_map<int,int> mp;
+    mp[0] = 1;
+    int val = 0, ans = 0;
+    for(int i=0; i<arr.size(); i++){
+        val ^= arr[i];
+        if(mp.find(val ^ x) != mp.end()){
+            ans += mp[val ^ x];
+        }
+        mp[val] += 1;
+    }
+    return ans;
+}
