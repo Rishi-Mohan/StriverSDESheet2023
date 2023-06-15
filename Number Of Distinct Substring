@@ -1,0 +1,55 @@
+#include <bits/stdc++.h> 
+struct Node{
+    Node *links[26];
+    bool flag;
+
+    bool containKey(char ch) { 
+        return (links[ch - 'a'] != NULL); 
+    }
+    void put(char ch, Node *node){
+        links[ch-'a'] = node;
+    }
+
+    Node *get(char ch){
+        return links[ch-'a'];
+    }
+
+    void setEnd(){
+        flag = 1;
+    }
+};
+
+int ans = 0;
+
+class Trie {
+private:
+    Node *root;
+public:
+    Trie() {
+        root = new Node();
+    }
+
+    void insert(string word) {
+        Node *node = root;
+        for(auto ch: word){
+            if(!node->containKey(ch)){
+                node->put(ch, new Node());
+                // everytime any new link is created we increment our answer
+                ans += 1;
+            }
+            node = node->get(ch);
+        }
+        node->setEnd();
+    }
+};
+
+int distinctSubstring(string &word) {
+    ans = 0;
+    Trie t;
+    int n = word.size();
+    for(int i=0; i<n; i++){
+        t.insert(word.substr(i));
+    }
+
+    return ans;
+}
