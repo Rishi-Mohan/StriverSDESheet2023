@@ -1,0 +1,41 @@
+#include <bits/stdc++.h> 
+vector<int> BFS(int vertex, vector<pair<int, int>> edges)
+{
+    vector<vector<int>> adj(vertex);
+    for(pair<int,int> a : edges){
+        adj[a.first].push_back(a.second);
+        adj[a.second].push_back(a.first);
+    }
+
+    vector<int> vis(vertex);
+    vector<int> ans;
+    
+    for(int j=0; j<vertex; j++){
+        if(!vis[j]){
+            queue<int> q;
+            q.push(j);
+            vis[j] = 1;
+            ans.push_back(j);
+
+
+            while(!q.empty()){
+                int p = q.front();
+                q.pop();
+
+                
+                vector<int> temp;
+                for(auto i : adj[p]){
+                    if (!vis[i]) {
+                        q.push(i);
+                        vis[i] = 1;
+                        temp.push_back(i);
+                    }
+                }
+                sort(temp.begin(), temp.end());
+                for(auto i : temp)
+                    ans.push_back(i);
+            }
+        }
+    }
+    return ans;
+}
