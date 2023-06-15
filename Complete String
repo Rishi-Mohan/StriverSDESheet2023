@@ -1,0 +1,82 @@
+#include <bits/stdc++.h> 
+struct Node{
+    Node *links[26];
+    bool flag;
+
+    bool containKey(char ch) { 
+        return (links[ch - 'a'] != NULL); 
+    }
+    void put(char ch, Node *node){
+        links[ch-'a'] = node;
+    }
+
+    Node *get(char ch){
+        return links[ch-'a'];
+    }
+
+    void setEnd(){
+        flag = 1;
+    }
+
+    bool getEnd(){
+        return flag;
+    }
+
+};
+
+class Trie {
+private:
+    Node *root;
+public:
+
+    /** Initialize your data structure here. */
+    Trie() {
+        root = new Node();
+    }
+
+    /** Inserts a word into the trie. */
+    void insert(string word) {
+        Node *node = root;
+        for(auto ch: word){
+            if(!node->containKey(ch))
+                node->put(ch, new Node());
+            node = node->get(ch);
+        }
+        node->setEnd();
+    }
+
+    /** Returns if the word is in the trie. */
+    bool search(string word) {
+        Node *node = root;
+        for(auto ch: word){
+            if(!node->containKey(ch))
+                return 0;
+            node = node->get(ch);
+            // if at that point of string "ending flag" is false then return 0 
+            if(!node->getEnd()) return 0;
+        }
+        return node->getEnd();
+    }
+
+};
+
+string completeString(int n, vector<string> &a){
+    Trie t;
+    for(auto i : a)
+        t.insert(i);
+    
+    int len = 0;
+    string ans;
+    for(auto i : a){
+        if(t.search(i)){
+            if(i.size() > len){
+                len = i.size();
+                ans = i;
+            }else if(i.size() == len){
+                if(i < ans)
+                    ans = i;
+            }
+        }
+    }
+    return (ans.size() == 0 ? "None" : ans);
+}
