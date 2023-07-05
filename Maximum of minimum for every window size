@@ -1,0 +1,41 @@
+#include <bits/stdc++.h> 
+vector<int> maxMinWindow(vector<int> a, int n) {
+    // right smaller
+    vector<int> right(n, n);
+    stack<int> r;
+    for(int i=n-1; i>=0; i--){
+        while(!r.empty() && a[r.top()] > a[i]){
+            r.pop();
+        }
+        if(!r.empty()) right[i] = r.top();
+        r.push(i);
+    }
+
+    // left smaller
+    vector<int> left(n, -1);
+    stack<int> l;
+    for(int i=0; i<n; i++){
+        while(!l.empty() && a[l.top()] >= a[i]){
+            l.pop();
+        }
+        if(!l.empty()) left[i] = l.top();
+        l.push(i);
+    }
+
+    vector<int> ans(n,INT_MIN);
+    
+    // we basically need to find for which length current element act as a minimum
+    for(int i=0; i<n; i++){
+        int len = (i - left[i] - 1) + (right[i] - i);
+        ans[len - 1] = max(ans[len - 1], a[i]);
+    }
+
+    // if for the current length ans is INT_MIN then it means there is
+    // no array element that is min for that length
+    // in that case we update the answer for smaller length with greater length max
+    for(int i=n-2; i>=0; i--){
+        ans[i] = max(ans[i], ans[i+1]);
+    }
+
+    return ans;
+}
