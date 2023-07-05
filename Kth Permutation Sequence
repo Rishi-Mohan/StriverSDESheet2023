@@ -1,0 +1,22 @@
+string kthPermutation(int n, int k) {
+    vector<int> val;
+    for(int i=1; i<=n; i++) val.push_back(i);
+
+    int fact = 1;
+    for(int i=1; i<n; i++) fact *= i;
+
+    string ans;
+    k -= 1; // for making 0 based indexing
+
+    while(1){
+        ans += to_string(val[k/fact]);
+        val.erase(val.begin() + k / fact); // index of number need to delete
+
+        if(val.size() == 0) break;
+        
+        k %= fact; // updated k
+        fact /= (int)val.size(); // updated factorial
+     }
+
+     return ans;
+}
