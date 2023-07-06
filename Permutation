@@ -1,0 +1,51 @@
+// Method 1
+#include <bits/stdc++.h> 
+void solve(vector<bool> &freq, vector<string> &ans, string &s, string &cur){
+    if(cur.size() == s.size()){
+        ans.push_back(cur);
+        return;
+    }
+
+    for(int i=0; i<s.size(); i++){
+        if(!freq[i]){
+            freq[i] = 1;
+            cur += s[i];
+            solve(freq, ans, s, cur);
+            cur.pop_back();
+            freq[i] = 0;
+        }
+    }
+}
+vector<string> findPermutations(string &s) {
+    int n = s.size();
+    sort(s.begin(), s.end());
+    vector<bool> freq(n, 0);
+    vector<string> ans;
+    string cur;
+    solve(freq, ans, s, cur);
+    return ans;
+}
+
+// Method 2
+#include <bits/stdc++.h> 
+void solve(int ind, vector<string> &ans, string &s){
+    if(ind == s.size()){
+        ans.push_back(s);
+        return;
+    }
+
+    for(int i=ind; i<s.size(); i++){
+        swap(s[ind], s[i]);
+        solve(ind + 1, ans, s); // why (ind + 1) and not (i + 1)?
+                                // because ind is position in the string that is only move 
+                                // one step 
+        swap(s[ind], s[i]);
+    }
+}
+vector<string> findPermutations(string &s) {
+    int n = s.size();
+    sort(s.begin(), s.end());
+    vector<string> ans;
+    solve(0, ans, s);
+    return ans;
+}
