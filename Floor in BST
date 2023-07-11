@@ -1,0 +1,15 @@
+void inorder(TreeNode<int>* root, int X, int &ans){
+    if(root == NULL) return;
+
+    inorder(root->left, X, ans);
+    if(root->val <= X){
+        ans = max(ans, root->val);
+    }
+    inorder(root->right, X, ans);
+}
+int floorInBST(TreeNode<int> * root, int X)
+{
+    int ans = 0;
+    inorder(root, X, ans);
+    return ans;
+}
