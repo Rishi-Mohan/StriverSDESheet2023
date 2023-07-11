@@ -1,0 +1,53 @@
+#include <bits/stdc++.h> 
+/*   
+    template <typename T = int>
+	class TreeNode
+	{
+		public:
+		T data;
+		TreeNode<T> *left;
+		TreeNode<T> *right;
+
+		TreeNode(T data)
+		{
+			this->data = data;
+			left = NULL;
+			right = NULL;
+		}
+
+		~TreeNode()
+		{
+			if (left != NULL)
+			{
+		  		delete left;
+			}
+			if (right != NULL)
+			{
+			 	delete right;
+			}
+		}
+	};
+*/
+
+bool dfs(TreeNode<int> *root, int x, vector<int> &ans){
+	if(root == NULL) return 0;
+	ans.push_back(root->data);
+
+	if(ans.back() == x)
+		return 1;
+
+	// checking if the node is present in the left substree or right 
+	if(dfs(root->left, x, ans) || dfs(root->right, x, ans)) 
+		return 1;
+
+	// if not present in the current subtree then pop
+	ans.pop_back();
+	return 0;
+}
+
+vector<int> pathInATree(TreeNode<int> *root, int x)
+{
+	vector<int> ans;
+	dfs(root, x, ans);
+	return ans;
+}
