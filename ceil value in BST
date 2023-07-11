@@ -1,0 +1,14 @@
+void inorder(BinaryTreeNode<int>* node, int x, int &ans){
+    if(node == NULL) return;
+
+    inorder(node->left, x, ans);
+    if(node->data >= x){
+        ans = min(ans, node->data);
+    }
+    inorder(node->right, x, ans);
+}
+int findCeil(BinaryTreeNode<int> *node, int x){
+    int ans = 1e9;
+    inorder(node, x, ans);
+    return (ans == 1e9 ? -1 : ans);
+}
