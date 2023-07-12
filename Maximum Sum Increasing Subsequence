@@ -1,0 +1,18 @@
+#include <bits/stdc++.h> 
+int maxIncreasingDumbbellsSum(vector<int> &rack, int n)
+{
+	vector<int> ans = rack;
+	for(int i=0; i<n; i++){
+		for(int j=i-1; j>=0; j--){
+			if(rack[j] < rack[i]){
+				ans[i] = max(ans[i], ans[j] + rack[i]);
+			}
+		}
+	}
+	
+	int res = 0;
+	for(auto i : ans)
+		res = max(res, i);
+
+	return res;
+}
