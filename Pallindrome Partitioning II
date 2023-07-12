@@ -1,0 +1,28 @@
+#include <bits/stdc++.h>
+bool isPall(int i, int j, string &s){
+    while(i < j){
+        if(s[i++] != s[j--])
+            return 0;
+    }
+    return 1;
+}
+
+int solve(int ind, string &s, vector<int> &dp){
+    if(ind == s.size() || isPall(ind, s.size() - 1, s))
+        return 0;
+
+    if(dp[ind] != -1) return dp[ind];
+
+    int res = INT_MAX;
+    for(int i = ind; i < s.size(); i++){
+        if(isPall(ind, i, s)){
+            int mn = 1 + solve(i + 1, s, dp);
+            res = min(res, mn); 
+        }
+    }
+    return dp[ind] = res;
+} 
+int palindromePartitioning(string s) {
+    vector<int> dp(s.size(), -1);
+    return solve(0, s, dp);
+}
