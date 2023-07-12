@@ -21,3 +21,7 @@ int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
 	return solve(0, n, w, values, weights, dp);
 	
 }
+==========================================================================
+Tabulation
+==========================================
+TODO
