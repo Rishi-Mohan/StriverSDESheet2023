@@ -1,0 +1,62 @@
+#include<bits/stdc++.h>
+using namespace std;
+int solve(int ind1, int ind2, string &str1, string &str2,vector<vector<int>> &dp){
+    if(ind1 < 0 && ind2 < 0) return 0;
+    if(ind2 < 0 && ind1 >= 0) return ind1 + 1; // some char left at str2
+    if(ind1 < 0 && ind2 >= 0) return ind2 + 1; // some char left at str1
+
+    if(dp[ind1][ind2] != -1) return dp[ind1][ind2];
+
+    if(str1[ind1] == str2[ind2]){
+        return dp[ind1][ind2] = solve(ind1-1, ind2-1, str1, str2, dp);
+    }else{
+        // replace
+        int rep = 1 + solve(ind1-1, ind2-1, str1, str2, dp);
+        //delete || insert
+        int delins = 1 + min(solve(ind1-1 , ind2, str1, str2, dp), solve(ind1, ind2-1, str1, str2,dp));
+        return dp[ind1][ind2] = min({rep, delins});
+    }
+
+}
+int editDistance(string str1, string str2)
+{
+    int n = str1.size(), m = str2.size();
+    vector<vector<int>> dp(n, vector<int>(m, -1));
+    return solve(n-1, m-1, str1, str2, dp);
+}
+=============================================
+Tabulation
+=============================================
+#include<bits/stdc++.h>
+using namespace std;
+
+int editDistance(string str1, string str2)
+{
+    int n = str1.size(), m = str2.size();
+    vector<vector<int>> dp(n+1, vector<int>(m+1));
+
+    // if second string is completed but first string is left
+    for(int i=0; i<=n; i++){
+        dp[i][0] = i;
+    }
+
+    // if first string is completed but second string is left
+    for(int i=0; i<=m; i++){
+        dp[0][i] = i;
+    }
+
+    for(int i=1; i<=n; i++){
+        for(int j=1; j<=m; j++){
+            if(str1[i-1] == str2[j - 1])
+                dp[i][j] = dp[i-1][j-1];
+            else{
+                int rep = 1 + dp[i-1][j-1];
+                int delins = 1 + min(dp[i-1][j], dp[i][j-1]);
+
+                dp[i][j] = min(rep, delins);
+            }
+        }
+    }
+
+    return dp[n][m];
+}
