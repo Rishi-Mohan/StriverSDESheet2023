@@ -1,0 +1,26 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+long solve(int ind, int value, int *d, vector<vector<long>> &dp){
+    if(value == 0) return 1;
+    
+    if(ind == 0){
+        if(value % d[0] == 0) return 1;
+        return 0;
+    }
+    
+    if(dp[ind][value] != -1) return dp[ind][value];
+    
+    long pick = 0;
+    if(value >= d[ind]){
+        pick = solve(ind, value - d[ind], d, dp);
+    }
+    long notpick = solve(ind - 1, value, d, dp);
+    
+    return dp[ind][value] = (pick + notpick);
+}
+long countWaysToMakeChange(int *d, int n, int value)
+{
+    vector<vector<long>> dp(n, vector<long>(value + 1, -1));
+    return solve(n-1, value, d, dp);
+}
