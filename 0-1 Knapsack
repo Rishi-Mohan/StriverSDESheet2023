@@ -1,0 +1,23 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+int solve(int ind, int n, int w, vector<int> &values, vector<int> &weights, 
+	vector<vector<int>> &dp){
+	if(w == 0) return 0;
+	if(ind >= n) return 0;
+
+	if(dp[ind][w] != -1) return dp[ind][w];
+	
+	int take = 0;
+	int nottake = solve(ind + 1, n, w, values, weights, dp);
+	if(w >= weights[ind]){
+		take = values[ind] + solve(ind + 1, n, w - weights[ind], values, weights, dp);
+	}
+	return dp[ind][w] = max(take, nottake);
+}
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+	vector<vector<int>> dp(n+1, vector<int> (w + 1, -1));
+	return solve(0, n, w, values, weights, dp);
+	
+}
