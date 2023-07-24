@@ -1,0 +1,39 @@
+#include<bits/stdc++.h>
+void dfs(int node, stack<int> &st, vector<int> &vis, vector<vector<int>> &adj){
+  vis[node] = 1;
+  for(auto it : adj[node]){
+    if(!vis[it])
+      dfs(it, st, vis,adj);
+  }
+  st.push(node);
+}
+
+int detectCycleInDirectedGraph(int n, vector < pair < int, int >> & edges) {
+  vector<vector<int>> adj(n + 1);
+  for(auto i : edges){
+    if(i.first == i.second) return 1; // to check self loop
+    adj[i.first].push_back(i.second);
+  }
+
+  stack<int> st;
+  vector<int> vis(n + 1, 0);
+  
+  for(int i=1; i<=n; i++){
+    if(!vis[i])
+      dfs(i, st, vis, adj);
+  }
+  
+  int pos = 0;
+  unordered_map<int,int> mp;
+  while(!st.empty()){
+    mp[st.top()] = pos++;
+    st.pop();
+  }
+
+  for(auto i : edges){
+    if(mp[i.first] > mp[i.second])
+      return 1;
+  }
+  
+  return 0;
+}
