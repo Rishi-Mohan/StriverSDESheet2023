@@ -1,0 +1,25 @@
+void connectNodes(BinaryTreeNode< int > *root) {
+    if(root == NULL) return;
+
+    queue<BinaryTreeNode<int>*> q;
+    q.push(root);
+
+    while(!q.empty()){
+        int sz = q.size();
+        for(int i=0; i<sz; i++){
+            BinaryTreeNode<int> * p = q.front();
+            q.pop();
+
+            if(i + 1 == sz){
+                p->next = NULL;
+            }else{
+                p->next = q.front();
+            }
+
+            if(p->left != NULL)
+                q.push(p->left);
+            if(p->right != NULL)
+                q.push(p->right);
+        }
+    }
+}
