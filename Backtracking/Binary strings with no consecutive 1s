@@ -1,0 +1,28 @@
+void solve(int ind, string &temp, int N, vector<string> &ans){
+    if(ind == N){
+        ans.push_back(temp);
+        return;
+    }
+    
+    if(temp.back() == '1'){
+        temp.push_back('0');
+        solve(ind + 1, temp, N, ans);
+        temp.pop_back();
+    }else{
+        temp.push_back('0');
+        solve(ind + 1, temp, N, ans);
+        temp.pop_back();
+
+        temp.push_back('1');
+        solve(ind + 1, temp, N, ans);
+        temp.pop_back();
+        
+    }
+}
+
+vector<string> generateString(int N) {
+    vector<string> ans;
+    string temp;
+    solve(0, temp, N, ans);
+    return ans;
+}
